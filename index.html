@@ -23,16 +23,14 @@
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            margin: 20px;
         }
         h1 {
             color: #333;
             font-family: 'Dancing Script', cursive;
             font-size: 3em;
-        }
-        .smile-quiz {
-            color: #ff6347;
-            font-family: 'Dancing Script', cursive;
-            font-size: 3em;
+            margin-top: 0;
         }
         p {
             font-size: 1.2em;
@@ -41,27 +39,12 @@
         .word {
             font-size: 1.5em;
             font-weight: bold;
-            color: #333;
-            display: flex;
-            align-items: center;
-            justify-content: left;
+            color: #9370DB; /* 연보라색 */
         }
         .definition {
-            font-size: 1.2em;
+            font-size: 1em;
             color: #555;
-            margin-left: 20px;
         }
-        .word span {
-            display: inline-block;
-            color: #ff6347; /* 기본 색상 */
-        }
-        .word span:nth-child(1) { color: #ff0000; }
-        .word span:nth-child(2) { color: #ff7f00; }
-        .word span:nth-child(3) { color: #ffff00; }
-        .word span:nth-child(4) { color: #00ff00; }
-        .word span:nth-child(5) { color: #0000ff; }
-        .word span:nth-child(6) { color: #4b0082; }
-        .word span:nth-child(7) { color: #9400d3; }
         button {
             padding: 10px 20px;
             font-size: 1em;
@@ -77,7 +60,7 @@
             background-color: #0056b3;
         }
         img {
-            width: 200px;
+            width: 100%;
             height: auto;
             margin-bottom: 20px;
         }
@@ -103,17 +86,64 @@
             color: #888;
             margin-top: 10px;
         }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
     </style>
 </head>
 <body>
     <div class="container" id="main-container">
-        <img id="cute-image" src="https://images.app.goo.gl/skVZzUaFAX3gAeQ77" alt="Cute Image">
+        <img id="cute-image" src="https://cdn.pixabay.com/photo/2014/12/07/09/30/milky-way-559641_1280.jpg" alt="Milky Way">
         <h1>Hello Voca</h1>
         <div id="words-list">
             <!-- 단어 목록이 여기에 표시됩니다 -->
+            <table>
+                <tr>
+                    <th>#</th>
+                    <th>Word</th>
+                    <th>Definition</th>
+                </tr>
+                <tr class="word">
+                    <td>1</td>
+                    <td class="word">abandon</td>
+                    <td class="definition">cease to support or look after; leave behind.<br>Example: She had to abandon her plans.</td>
+                </tr>
+                <tr class="word">
+                    <td>2</td>
+                    <td class="word">ability</td>
+                    <td class="definition">possession of the means or skill to do something.<br>Example: She has the ability to solve complex problems.</td>
+                </tr>
+                <tr class="word">
+                    <td>3</td>
+                    <td class="word">abrupt</td>
+                    <td class="definition">sudden and unexpected.<br>Example: His departure was abrupt.</td>
+                </tr>
+                <tr class="word">
+                    <td>4</td>
+                    <td class="word">absorb</td>
+                    <td class="definition">take in or soak up.<br>Example: The sponge can absorb a lot of water.</td>
+                </tr>
+                <tr class="word">
+                    <td>5</td>
+                    <td class="word">abstract</td>
+                    <td class="definition">existing in thought or as an idea but not having a physical or concrete existence.<br>Example: The concept was too abstract for me.</td>
+                </tr>
+            </table>
         </div>
         <button id="finish-button">Finish</button>
-        <div class="for-dana">for Dana</div>
+        <div class="for-dana">I love Dana ❤️</div>
         <div class="source">Source: Oxford Dictionary</div>
     </div>
 
@@ -137,11 +167,11 @@
 
         function displayWords() {
             const wordsList = document.getElementById('words-list');
-            words.forEach(word => {
-                const wordElement = document.createElement('div');
+            words.forEach((word, index) => {
+                const wordElement = document.createElement('tr');
                 wordElement.classList.add('word');
-                wordElement.innerHTML = `${[...word.word].map((char, index) => `<span>${char}</span>`).join('')}<br><span class="definition">${word.definition}</span>`;
-                wordsList.appendChild(wordElement);
+                wordElement.innerHTML = `<td>${index + 1}</td><td class="word">${word.word}</td><td class="definition">${word.definition.split('.')[0]}<br>Example: ${word.definition.split('.')[1]}</td>`;
+                wordsList.querySelector('table').appendChild(wordElement);
             });
         }
 
