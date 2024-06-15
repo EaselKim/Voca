@@ -105,6 +105,7 @@
                 </tr>
             </table>
         </div>
+        <button id="new-word-button">New Word</button>
         <button id="finish-button">Finish</button>
     </div>
 
@@ -195,7 +196,6 @@
             } else {
                 feedback.innerHTML = 'Try again';
                 feedback.style.color = 'red';
-                showRandomTestQuestion();
             }
             feedback.classList.remove('hidden');
         }
@@ -207,6 +207,7 @@
         }
 
         document.getElementById('finish-button').addEventListener('click', switchToTest);
+        document.getElementById('new-word-button').addEventListener('click', displayWords);
         document.getElementById('home-button').addEventListener('click', returnHome);
 
         // 페이지 로드 시 초기 설정
