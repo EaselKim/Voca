@@ -23,7 +23,8 @@
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 80%;
+            width: 90%;
+            max-width: 600px;
             margin: 20px;
         }
         h1 {
@@ -31,6 +32,16 @@
             font-family: 'Dancing Script', cursive;
             font-size: 3em;
             margin-top: 0;
+        }
+        .quote-box {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.5em;
+            color: #888;
+            margin: 20px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
         }
         p {
             font-size: 1.2em;
@@ -63,6 +74,7 @@
             width: 100%;
             height: auto;
             margin-bottom: 20px;
+            border-radius: 8px;
         }
         .for-dana {
             margin-top: 20px;
@@ -101,12 +113,31 @@
         th {
             background-color: #f4f4f4;
         }
+        .home-button {
+            display: none;
+            padding: 10px 20px;
+            font-size: 1em;
+            margin-top: 20px;
+            cursor: pointer;
+            border: none;
+            background-color: #28a745;
+            color: #fff;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .home-button:hover {
+            background-color: #218838;
+        }
     </style>
 </head>
 <body>
     <div class="container" id="main-container">
         <img id="cute-image" src="https://cdn.pixabay.com/photo/2014/12/07/09/30/milky-way-559641_1280.jpg" alt="Milky Way">
         <h1>Hello Voca</h1>
+        <div class="quote-box">
+            "The only way to do great work is to love what you do."<br>
+            <small>- Steve Jobs</small>
+        </div>
         <div id="words-list">
             <!-- 단어 목록이 여기에 표시됩니다 -->
             <table>
@@ -143,6 +174,7 @@
             </table>
         </div>
         <button id="finish-button">Finish</button>
+        <button id="new-word-button">New Word</button>
         <div class="for-dana">I love Dana ❤️</div>
         <div class="source">Source: Oxford Dictionary</div>
     </div>
@@ -154,6 +186,7 @@
             <!-- 선택지가 여기에 표시됩니다 -->
         </div>
         <p id="test-feedback" class="hidden"></p>
+        <button id="home-button" class="home-button">Home</button>
     </div>
 
     <script>
@@ -167,12 +200,32 @@
 
         function displayWords() {
             const wordsList = document.getElementById('words-list');
+            wordsList.querySelector('table').innerHTML = `
+                <tr>
+                    <th>#</th>
+                    <th>Word</th>
+                    <th>Definition</th>
+                </tr>
+            `;
             words.forEach((word, index) => {
                 const wordElement = document.createElement('tr');
                 wordElement.classList.add('word');
                 wordElement.innerHTML = `<td>${index + 1}</td><td class="word">${word.word}</td><td class="definition">${word.definition.split('.')[0]}<br>Example: ${word.definition.split('.')[1]}</td>`;
                 wordsList.querySelector('table').appendChild(wordElement);
             });
+        }
+
+        function addRandomWord() {
+            const randomWords = [
+                { word: "serendipity", definition: "the occurrence and development of events by chance in a happy or beneficial way. Example: Meeting her was pure serendipity." },
+                { word: "ephemeral", definition: "lasting for a very short time. Example: The beauty of the sunset was ephemeral." },
+                { word: "quintessential", definition: "representing the most perfect or typical example of a quality or class. Example: He was the quintessential tough guy." },
+                { word: "elucidate", definition: "make (something) clear; explain. Example: He was called upon to elucidate the matter." },
+                { word: "ineffable", definition: "too great or extreme to be expressed or described in words. Example: The ineffable beauty of                 { word: "ineffable", definition: "too great or extreme to be expressed or described in words. Example: The ineffable beauty of the Himalayas." }
+            ];
+            const randomIndex = Math.floor(Math.random() * randomWords.length);
+            words.push(randomWords[randomIndex]);
+            displayWords();
         }
 
         function switchToTest() {
@@ -203,17 +256,26 @@
         function checkAnswer(selectedAnswer, correctAnswer) {
             const feedback = document.getElementById('test-feedback');
             if (selectedAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
-                feedback.innerText = '잘했어! 내일 또 만나';
+                feedback.innerHTML = 'Well done! See you tomorrow.<br>잘했어! 내일 또 만나';
                 feedback.style.color = 'green';
+                document.getElementById('home-button').style.display = 'block';
             } else {
-                feedback.innerText = '틀렸어요. 다시 시도해 보세요.';
+                feedback.innerHTML = 'Wrong. Try again.<br>틀렸어요. 다시 시도해보세요.';
                 feedback.style.color = 'red';
                 showRandomTestQuestion();
             }
             feedback.classList.remove('hidden');
         }
 
+        function returnHome() {
+            document.getElementById('main-container').classList.remove('hidden');
+            document.getElementById('test-container').classList.add('hidden');
+            addRandomWord();
+        }
+
         document.getElementById('finish-button').addEventListener('click', switchToTest);
+        document.getElementById('new-word-button').addEventListener('click', addRandomWord);
+        document.getElementById('home-button').addEventListener('click', returnHome);
 
         // 페이지 로드 시 초기 설정
         window.onload = () => {
