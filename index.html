@@ -28,6 +28,11 @@
             font-family: 'Dancing Script', cursive;
             font-size: 3em;
         }
+        .smile-quiz {
+            color: #ff6347;
+            font-family: 'Dancing Script', cursive;
+            font-size: 3em;
+        }
         p {
             font-size: 1.2em;
             color: #555;
@@ -36,10 +41,13 @@
             font-size: 1.5em;
             font-weight: bold;
             color: #333;
+            display: flex;
+            align-items: center;
         }
         .definition {
             font-size: 1.2em;
             color: #555;
+            margin-left: 20px;
         }
         button {
             padding: 10px 20px;
@@ -68,11 +76,20 @@
         .hidden {
             display: none;
         }
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .quiz-options button {
+            margin: 5px 0;
+            width: 200px;
+        }
     </style>
 </head>
 <body>
     <div class="container" id="main-container">
-        <img id="character" src="" alt="Cute Character">
+        <img id="cat-image" src="" alt="Cute Cat" style="width: 200px; height: auto;">
         <h1>Hello Voca</h1>
         <div id="words-list">
             <!-- 단어 목록이 여기에 표시됩니다 -->
@@ -82,10 +99,11 @@
     </div>
 
     <div class="container hidden" id="test-container">
-        <h1>Test</h1>
+        <h1 class="smile-quiz">Smile Quiz</h1>
         <p id="test-question">What is the meaning of <span id="test-word"></span>?</p>
-        <input type="text" id="test-answer" placeholder="Type your answer here">
-        <button id="submit-answer">Submit</button>
+        <div class="quiz-options" id="quiz-options">
+            <!-- 선택지가 여기에 표시됩니다 -->
+        </div>
         <p id="test-feedback" class="hidden"></p>
     </div>
 
@@ -95,32 +113,33 @@
             { word: "ability", definition: "possession of the means or skill to do something. Example: She has the ability to solve complex problems." },
             { word: "abrupt", definition: "sudden and unexpected. Example: His departure was abrupt." },
             { word: "absorb", definition: "take in or soak up. Example: The sponge can absorb a lot of water." },
-            { word: "abstract", definition: "existing in thought or as an idea but not having a physical or concrete existence. Example: The concept was too abstract for me." },
-            { word: "academy", definition: "a place of study or training in a special field. Example: She attended a military academy." },
-            { word: "access", definition: "a means of approaching or entering a place. Example: The only access to the village is by boat." }
+            { word: "abstract", definition: "existing in thought or as an idea but not having a physical or concrete existence. Example: The concept was too abstract for me." }
         ];
 
-        const characters = [
-            "https://source.unsplash.com/random/100x100/?cute",
-            "https://source.unsplash.com/random/100x100/?cartoon",
-            "https://source.unsplash.com/random/100x100/?animal"
-        ];
+        const iconUrl = "https://img.icons8.com/emoji/48/000000/book-emoji.png";
+        const catApiUrl = "https://pixabay.com/api/?key=YOUR_PIXABAY_API_KEY&q=cute+cat&image_type=photo&per_page=3";
 
         function displayWords() {
             const wordsList = document.getElementById('words-list');
             words.forEach(word => {
                 const wordElement = document.createElement('div');
-                wordElement.innerHTML = `<span class="word">${word.word}</span><br><span class="definition">${word.definition}</span>`;
+                wordElement.classList.add('word');
+                wordElement.innerHTML = `<img src="${iconUrl}" alt="Book Icon" style="width: 24px; height: auto;"> <span>${word.word}</span><br><span class="definition">${word.definition}</span>`;
                 wordsList.appendChild(wordElement);
             });
         }
 
-        function getRandomCharacter() {
-            const date = new Date();
-            const seed = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
-            const randomIndex = (parseInt(seed.split('-').join(''), 10) % characters.length);
-            const character = characters[randomIndex];
-            document.getElementById('character').src = character;
+        async function getRandomCatImage() {
+            try {
+                const response = await fetch(catApiUrl);
+                const data = await response.json();
+                if (data.hits.length > 0) {
+                    const randomIndex = Math.floor(Math.random() * data.hits.length);
+                    document.getElementById('cat-image').src = data.hits[randomIndex].webformatURL;
+                }
+            } catch (error) {
+                console.error("Error fetching cat image:", error);
+            }
         }
 
         function switchToTest() {
@@ -133,14 +152,24 @@
             const randomIndex = Math.floor(Math.random() * words.length);
             const word = words[randomIndex];
             document.getElementById('test-word').innerText = word.word;
-            document.getElementById('test-answer').dataset.correctAnswer = word.definition.split('.')[0];
+            generateOptions(word.definition.split('.')[0]);
         }
 
-        function checkAnswer() {
-            const answer = document.getElementById('test-answer').value.trim().toLowerCase();
-            const correctAnswer = document.getElementById('test-answer').dataset.correctAnswer.trim().toLowerCase();
+        function generateOptions(correctAnswer) {
+            const quizOptions = document.getElementById('quiz-options');
+            quizOptions.innerHTML = '';
+            const shuffledWords = [...words].sort(() => 0.5 - Math.random());
+            shuffledWords.forEach(word => {
+                const button = document.createElement('button');
+                button.innerText = word.definition.split('.')[0];
+                button.onclick = () => checkAnswer(button.innerText, correctAnswer);
+                quizOptions.appendChild(button);
+            });
+        }
+
+        function checkAnswer(selectedAnswer, correctAnswer) {
             const feedback = document.getElementById('test-feedback');
-            if (answer === correctAnswer) {
+            if (selectedAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
                 feedback.innerText = '잘했어! 내일 또 만나';
                 feedback.style.color = 'green';
             } else {
@@ -152,12 +181,11 @@
         }
 
         document.getElementById('finish-button').addEventListener('click', switchToTest);
-        document.getElementById('submit-answer').addEventListener('click', checkAnswer);
 
         // 페이지 로드 시 초기 설정
         window.onload = () => {
             displayWords();
-            getRandomCharacter();
+            getRandomCatImage();
         };
     </script>
 </body>
