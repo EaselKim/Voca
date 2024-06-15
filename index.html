@@ -6,7 +6,7 @@
     <title>Hello Voca</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
-        
+
         body {
             font-family: Arial, sans-serif;
             display: flex;
@@ -43,10 +43,6 @@
             border-radius: 8px;
             background-color: #f9f9f9;
         }
-        p {
-            font-size: 1.2em;
-            color: #555;
-        }
         .word {
             font-size: 1.5em;
             font-weight: bold;
@@ -55,6 +51,10 @@
         .definition {
             font-size: 1em;
             color: #555;
+        }
+        .synonym {
+            font-size: 0.9em;
+            color: #000;
         }
         button {
             padding: 10px 20px;
@@ -69,34 +69,6 @@
         }
         button:hover {
             background-color: #0056b3;
-        }
-        img {
-            width: 100%;
-            height: auto;
-            margin-bottom: 20px;
-            border-radius: 8px;
-        }
-        .for-dana {
-            margin-top: 20px;
-            font-size: 0.9em;
-            color: #888;
-        }
-        .hidden {
-            display: none;
-        }
-        .quiz-options {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .quiz-options button {
-            margin: 5px 0;
-            width: 200px;
-        }
-        .source {
-            font-size: 0.8em;
-            color: #888;
-            margin-top: 10px;
         }
         table {
             width: 100%;
@@ -113,30 +85,13 @@
         th {
             background-color: #f4f4f4;
         }
-        .home-button {
-            display: none;
-            padding: 10px 20px;
-            font-size: 1em;
-            margin-top: 20px;
-            cursor: pointer;
-            border: none;
-            background-color: #28a745;
-            color: #fff;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-        .home-button:hover {
-            background-color: #218838;
-        }
     </style>
 </head>
 <body>
     <div class="container" id="main-container">
-        <img id="cute-image" src="https://cdn.pixabay.com/photo/2014/12/07/09/30/milky-way-559641_1280.jpg" alt="Milky Way">
         <h1>Hello Voca</h1>
-        <div class="quote-box">
-            "The only way to do great work is to love what you do."<br>
-            <small>- Steve Jobs</small>
+        <div class="quote-box" id="quote-box">
+            <!-- 랜덤 명언이 여기에 표시됩니다 -->
         </div>
         <div id="words-list">
             <!-- 단어 목록이 여기에 표시됩니다 -->
@@ -145,38 +100,12 @@
                     <th>#</th>
                     <th>Word</th>
                     <th>Definition</th>
-                </tr>
-                <tr class="word">
-                    <td>1</td>
-                    <td class="word">abandon</td>
-                    <td class="definition">cease to support or look after; leave behind.<br>Example: She had to abandon her plans.</td>
-                </tr>
-                <tr class="word">
-                    <td>2</td>
-                    <td class="word">ability</td>
-                    <td class="definition">possession of the means or skill to do something.<br>Example: She has the ability to solve complex problems.</td>
-                </tr>
-                <tr class="word">
-                    <td>3</td>
-                    <td class="word">abrupt</td>
-                    <td class="definition">sudden and unexpected.<br>Example: His departure was abrupt.</td>
-                </tr>
-                <tr class="word">
-                    <td>4</td>
-                    <td class="word">absorb</td>
-                    <td class="definition">take in or soak up.<br>Example: The sponge can absorb a lot of water.</td>
-                </tr>
-                <tr class="word">
-                    <td>5</td>
-                    <td class="word">abstract</td>
-                    <td class="definition">existing in thought or as an idea but not having a physical or concrete existence.<br>Example: The concept was too abstract for me.</td>
+                    <th>Example</th>
+                    <th>Synonym</th>
                 </tr>
             </table>
         </div>
         <button id="finish-button">Finish</button>
-        <button id="new-word-button">New Word</button>
-        <div class="for-dana">I love Dana ❤️</div>
-        <div class="source">Source: Oxford Dictionary</div>
     </div>
 
     <div class="container hidden" id="test-container">
@@ -190,43 +119,46 @@
     </div>
 
     <script>
-        const words = [
-            { word: "abandon", definition: "cease to support or look after; leave behind. Example: She had to abandon her plans." },
-            { word: "ability", definition: "possession of the means or skill to do something. Example: She has the ability to solve complex problems." },
-            { word: "abrupt", definition: "sudden and unexpected. Example: His departure was abrupt." },
-            { word: "absorb", definition: "take in or soak up. Example: The sponge can absorb a lot of water." },
-            { word: "abstract", definition: "existing in thought or as an idea but not having a physical or concrete existence. Example: The concept was too abstract for me." }
+        const quotes = [
+            "The only way to do great work is to love what you do. - Steve Jobs",
+            "You are never too old to set another goal or to dream a new dream. - C.S. Lewis",
+            "The best way to predict the future is to invent it. - Alan Kay",
+            "The journey of a thousand miles begins with one step. - Lao Tzu",
+            "Dream big and dare to fail. - Norman Vaughan"
         ];
 
+        const words = [
+            { word: "abandon", definition: "cease to support or look after; leave behind.", example: "She had to abandon her plans.", synonym: "forsake" },
+            { word: "ability", definition: "possession of the means or skill to do something.", example: "She has the ability to solve complex problems.", synonym: "capability" },
+            { word: "abrupt", definition: "sudden and unexpected.", example: "His departure was abrupt.", synonym: "sudden" },
+            { word: "absorb", definition: "take in or soak up.", example: "The sponge can absorb a lot of water.", synonym: "assimilate" },
+            { word: "abstract", definition: "existing in thought or as an idea but not having a physical or concrete existence.", example: "The concept was too abstract for me.", synonym: "theoretical" }
+        ];
+
+        function displayQuote() {
+            const quoteBox = document.getElementById('quote-box');
+            const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+            quoteBox.innerHTML = `<span style="font-size: 0.8em; color: #888;">${randomQuote}</span>`;
+        }
+
         function displayWords() {
-            const wordsList = document.getElementById('words-list');
-            wordsList.querySelector('table').innerHTML = `
+            const wordsList = document.getElementById('words-list').querySelector('table');
+            wordsList.innerHTML = `
                 <tr>
                     <th>#</th>
                     <th>Word</th>
                     <th>Definition</th>
+                    <th>Example</th>
+                    <th>Synonym</th>
                 </tr>
             `;
-            words.forEach((word, index) => {
+            const shuffledWords = [...words].sort(() => 0.5 - Math.random()).slice(0, 5);
+            shuffledWords.forEach((word, index) => {
                 const wordElement = document.createElement('tr');
                 wordElement.classList.add('word');
-                wordElement.innerHTML = `<td>${index + 1}</td><td class="word">${word.word}</td><td class="definition">${word.definition.split('.')[0]}<br>Example: ${word.definition.split('.')[1]}</td>`;
-                wordsList.querySelector('table').appendChild(wordElement);
+                wordElement.innerHTML = `<td>${index + 1}</td><td class="word">${word.word}</td><td class="definition">${word.definition}</td><td class="example">${word.example}</td><td class="synonym">${word.synonym}</td>`;
+                wordsList.appendChild(wordElement);
             });
-        }
-
-        function addRandomWord() {
-            const randomWords = [
-                { word: "serendipity", definition: "the occurrence and development of events by chance in a happy or beneficial way. Example: Meeting her was pure serendipity." },
-                { word: "ephemeral", definition: "lasting for a very short time. Example: The beauty of the sunset was ephemeral." },
-                { word: "quintessential", definition: "representing the most perfect or typical example of a quality or class. Example: He was the quintessential tough guy." },
-                { word: "elucidate", definition: "make (something) clear; explain. Example: He was called upon to elucidate the matter." },
-                { word: "ineffable", definition: "too great or extreme to be expressed or described in words. Example: The ineffable beauty of the Himalayas." }
-            ];
-            const randomIndex = Math
-                        const randomIndex = Math.floor(Math.random() * randomWords.length);
-            words.push(randomWords[randomIndex]);
-            displayWords();
         }
 
         function switchToTest() {
@@ -239,17 +171,17 @@
             const randomIndex = Math.floor(Math.random() * words.length);
             const word = words[randomIndex];
             document.getElementById('test-word').innerText = word.word;
-            generateOptions(word.definition.split('.')[0]);
+            generateOptions(word.word);
         }
 
-        function generateOptions(correctAnswer) {
+        function generateOptions(correctWord) {
             const quizOptions = document.getElementById('quiz-options');
             quizOptions.innerHTML = '';
             const shuffledWords = [...words].sort(() => 0.5 - Math.random());
             shuffledWords.forEach(word => {
                 const button = document.createElement('button');
-                button.innerText = word.definition.split('.')[0];
-                button.onclick = () => checkAnswer(button.innerText, correctAnswer);
+                button.innerText = word.word;
+                button.onclick = () => checkAnswer(button.innerText, correctWord);
                 quizOptions.appendChild(button);
             });
         }
@@ -257,11 +189,11 @@
         function checkAnswer(selectedAnswer, correctAnswer) {
             const feedback = document.getElementById('test-feedback');
             if (selectedAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
-                feedback.innerHTML = 'Well done! See you tomorrow.<br>잘했어! 내일 또 만나';
+                feedback.innerHTML = 'WELL DONE';
                 feedback.style.color = 'green';
                 document.getElementById('home-button').style.display = 'block';
             } else {
-                feedback.innerHTML = 'Wrong. Try again.<br>틀렸어요. 다시 시도해보세요.';
+                feedback.innerHTML = 'Try again';
                 feedback.style.color = 'red';
                 showRandomTestQuestion();
             }
@@ -271,15 +203,15 @@
         function returnHome() {
             document.getElementById('main-container').classList.remove('hidden');
             document.getElementById('test-container').classList.add('hidden');
-            addRandomWord();
+            displayWords();
         }
 
         document.getElementById('finish-button').addEventListener('click', switchToTest);
-        document.getElementById('new-word-button').addEventListener('click', addRandomWord);
         document.getElementById('home-button').addEventListener('click', returnHome);
 
         // 페이지 로드 시 초기 설정
         window.onload = () => {
+            displayQuote();
             displayWords();
         };
     </script>
