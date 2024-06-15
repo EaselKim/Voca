@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hello Voca by Dana</title>
+    <title>Hello Voca</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
+        
         body {
             font-family: Arial, sans-serif;
             display: flex;
@@ -23,9 +25,20 @@
         }
         h1 {
             color: #333;
+            font-family: 'Dancing Script', cursive;
+            font-size: 3em;
         }
         p {
+            font-size: 1.2em;
+            color: #555;
+        }
+        .word {
             font-size: 1.5em;
+            font-weight: bold;
+            color: #333;
+        }
+        .definition {
+            font-size: 1.2em;
             color: #555;
         }
         button {
@@ -47,42 +60,43 @@
             height: auto;
             margin-bottom: 20px;
         }
+        .for-dana {
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #888;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <img id="character" src="" alt="Cute Character">
-        <h1>Hello Voca by Dana</h1>
+        <h1>Hello Voca</h1>
         <p id="word">Click the button to get a new word</p>
         <button onclick="getRandomWord()">Get Today's Word</button>
+        <div class="for-dana">for Dana</div>
     </div>
 
     <script>
         const words = [
-            "abandon", "ability", "abrupt", "absorb", "abstract",
-            "academy", "access", "accident", "accompany", "account",
-            "accuse", "achieve", "acquire", "active", "actual",
-            "adapt", "addition", "address", "adequate", "adjust",
-            "administer", "admire", "admission", "admit", "adopt",
-            "adult", "advance", "advantage", "adventure", "advertise",
-            "advise", "aesthetic", "affect", "afford", "afraid",
-            "against", "agency", "agenda", "agree", "aid",
-            "aim", "aircraft", "alarm", "album", "alcohol",
-            "alert", "alien", "allow", "aloud", "alphabet",
-            "alter", "alternate", "altogether", "amaze", "ambition"
+            { word: "abandon", definition: "cease to support or look after; leave behind. Example: She had to abandon her plans." },
+            { word: "ability", definition: "possession of the means or skill to do something. Example: She has the ability to solve complex problems." },
+            { word: "abrupt", definition: "sudden and unexpected. Example: His departure was abrupt." },
+            { word: "absorb", definition: "take in or soak up. Example: The sponge can absorb a lot of water." },
+            { word: "abstract", definition: "existing in thought or as an idea but not having a physical or concrete existence. Example: The concept was too abstract for me." },
+            { word: "academy", definition: "a place of study or training in a special field. Example: She attended a military academy." },
+            { word: "access", definition: "a means of approaching or entering a place. Example: The only access to the village is by boat." }
         ];
 
         const characters = [
-            "https://example.com/cute-character1.png",
-            "https://example.com/cute-character2.png",
-            "https://example.com/cute-character3.png",
-            // 추가 이미지 URL을 여기에 넣으세요.
+            "https://i.imgur.com/Qzk4Gfy.png",
+            "https://i.imgur.com/6lB5tPj.png",
+            "https://i.imgur.com/ZoeHZMr.png"
         ];
 
         function getRandomWord() {
             const randomIndex = Math.floor(Math.random() * words.length);
             const word = words[randomIndex];
-            document.getElementById('word').innerText = word;
+            document.getElementById('word').innerHTML = `<span class="word">${word.word}</span><br><span class="definition">${word.definition}</span>`;
         }
 
         function getRandomCharacter() {
