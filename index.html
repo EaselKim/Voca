@@ -65,15 +65,28 @@
             font-size: 0.9em;
             color: #888;
         }
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container" id="main-container">
         <img id="character" src="" alt="Cute Character">
         <h1>Hello Voca</h1>
-        <p id="word">Click the button to get a new word</p>
-        <button onclick="getRandomWord()">Get Today's Word</button>
+        <div id="words-list">
+            <!-- 단어 목록이 여기에 표시됩니다 -->
+        </div>
+        <button id="finish-button">Finish</button>
         <div class="for-dana">for Dana</div>
+    </div>
+
+    <div class="container hidden" id="test-container">
+        <h1>Test</h1>
+        <p id="test-question">What is the meaning of <span id="test-word"></span>?</p>
+        <input type="text" id="test-answer" placeholder="Type your answer here">
+        <button id="submit-answer">Submit</button>
+        <p id="test-feedback" class="hidden"></p>
     </div>
 
     <script>
@@ -88,25 +101,64 @@
         ];
 
         const characters = [
-            "https://i.imgur.com/Qzk4Gfy.png",
-            "https://i.imgur.com/6lB5tPj.png",
-            "https://i.imgur.com/ZoeHZMr.png"
+            "https://source.unsplash.com/random/100x100/?cute",
+            "https://source.unsplash.com/random/100x100/?cartoon",
+            "https://source.unsplash.com/random/100x100/?animal"
         ];
 
-        function getRandomWord() {
-            const randomIndex = Math.floor(Math.random() * words.length);
-            const word = words[randomIndex];
-            document.getElementById('word').innerHTML = `<span class="word">${word.word}</span><br><span class="definition">${word.definition}</span>`;
+        function displayWords() {
+            const wordsList = document.getElementById('words-list');
+            words.forEach(word => {
+                const wordElement = document.createElement('div');
+                wordElement.innerHTML = `<span class="word">${word.word}</span><br><span class="definition">${word.definition}</span>`;
+                wordsList.appendChild(wordElement);
+            });
         }
 
         function getRandomCharacter() {
-            const randomIndex = Math.floor(Math.random() * characters.length);
+            const date = new Date();
+            const seed = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
+            const randomIndex = (parseInt(seed.split('-').join(''), 10) % characters.length);
             const character = characters[randomIndex];
             document.getElementById('character').src = character;
         }
 
-        // 페이지 로드 시 랜덤 캐릭터 이미지를 설정합니다.
-        window.onload = getRandomCharacter;
+        function switchToTest() {
+            document.getElementById('main-container').classList.add('hidden');
+            document.getElementById('test-container').classList.remove('hidden');
+            showRandomTestQuestion();
+        }
+
+        function showRandomTestQuestion() {
+            const randomIndex = Math.floor(Math.random() * words.length);
+            const word = words[randomIndex];
+            document.getElementById('test-word').innerText = word.word;
+            document.getElementById('test-answer').dataset.correctAnswer = word.definition.split('.')[0];
+        }
+
+        function checkAnswer() {
+            const answer = document.getElementById('test-answer').value.trim().toLowerCase();
+            const correctAnswer = document.getElementById('test-answer').dataset.correctAnswer.trim().toLowerCase();
+            const feedback = document.getElementById('test-feedback');
+            if (answer === correctAnswer) {
+                feedback.innerText = '잘했어! 내일 또 만나';
+                feedback.style.color = 'green';
+            } else {
+                feedback.innerText = '틀렸어요. 다시 시도해 보세요.';
+                feedback.style.color = 'red';
+                showRandomTestQuestion();
+            }
+            feedback.classList.remove('hidden');
+        }
+
+        document.getElementById('finish-button').addEventListener('click', switchToTest);
+        document.getElementById('submit-answer').addEventListener('click', checkAnswer);
+
+        // 페이지 로드 시 초기 설정
+        window.onload = () => {
+            displayWords();
+            getRandomCharacter();
+        };
     </script>
 </body>
 </html>
