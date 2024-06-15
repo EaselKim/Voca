@@ -10,6 +10,7 @@
         body {
             font-family: Arial, sans-serif;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
@@ -85,6 +86,24 @@
         th {
             background-color: #f4f4f4;
         }
+        .hidden {
+            display: none;
+        }
+        .home-button {
+            display: block;
+            padding: 10px 20px;
+            font-size: 1em;
+            margin-top: 20px;
+            cursor: pointer;
+            border: none;
+            background-color: #28a745;
+            color: #fff;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .home-button:hover {
+            background-color: #218838;
+        }
     </style>
 </head>
 <body>
@@ -107,6 +126,7 @@
         </div>
         <button id="new-word-button">New Word</button>
         <button id="finish-button">Finish</button>
+        <button id="home-button" class="home-button hidden">Home</button>
     </div>
 
     <div class="container hidden" id="test-container">
@@ -116,7 +136,6 @@
             <!-- 선택지가 여기에 표시됩니다 -->
         </div>
         <p id="test-feedback" class="hidden"></p>
-        <button id="home-button" class="home-button">Home</button>
     </div>
 
     <script>
@@ -133,7 +152,12 @@
             { word: "ability", definition: "possession of the means or skill to do something.", example: "She has the ability to solve complex problems.", synonym: "capability" },
             { word: "abrupt", definition: "sudden and unexpected.", example: "His departure was abrupt.", synonym: "sudden" },
             { word: "absorb", definition: "take in or soak up.", example: "The sponge can absorb a lot of water.", synonym: "assimilate" },
-            { word: "abstract", definition: "existing in thought or as an idea but not having a physical or concrete existence.", example: "The concept was too abstract for me.", synonym: "theoretical" }
+            { word: "abstract", definition: "existing in thought or as an idea but not having a physical or concrete existence.", example: "The concept was too abstract for me.", synonym: "theoretical" },
+            { word: "serendipity", definition: "the occurrence and development of events by chance in a happy or beneficial way.", example: "Meeting her was pure serendipity.", synonym: "chance" },
+            { word: "ephemeral", definition: "lasting for a very short time.", example: "The beauty of the sunset was ephemeral.", synonym: "short-lived" },
+            { word: "quintessential", definition: "representing the most perfect or typical example of a quality or class.", example: "He was the quintessential tough guy.", synonym: "typical" },
+            { word: "elucidate", definition: "make (something) clear; explain.", example: "He was called upon to elucidate the matter.", synonym: "explain" },
+            { word: "ineffable", definition: "too great or extreme to be expressed or described in words.", example: "The ineffable beauty of the Himalayas.", synonym: "indescribable" }
         ];
 
         function displayQuote() {
@@ -180,6 +204,8 @@
             quizOptions.innerHTML = '';
             const shuffledWords = [...words].sort(() => 0.5 - Math.random());
             shuffledWords.forEach(word => {
+                const button =
+                            shuffledWords.forEach(word => {
                 const button = document.createElement('button');
                 button.innerText = word.word;
                 button.onclick = () => checkAnswer(button.innerText, correctWord);
@@ -192,7 +218,7 @@
             if (selectedAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
                 feedback.innerHTML = 'WELL DONE';
                 feedback.style.color = 'green';
-                document.getElementById('home-button').style.display = 'block';
+                document.getElementById('home-button').classList.remove('hidden');
             } else {
                 feedback.innerHTML = 'Try again';
                 feedback.style.color = 'red';
@@ -204,6 +230,7 @@
             document.getElementById('main-container').classList.remove('hidden');
             document.getElementById('test-container').classList.add('hidden');
             displayWords();
+            displayQuote();
         }
 
         document.getElementById('finish-button').addEventListener('click', switchToTest);
@@ -218,3 +245,4 @@
     </script>
 </body>
 </html>
+                
