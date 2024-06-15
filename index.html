@@ -53,6 +53,10 @@
             font-size: 1em;
             color: #555;
         }
+        .example {
+            font-size: 0.9em;
+            color: #555;
+        }
         .synonym {
             font-size: 0.9em;
             color: #000;
@@ -90,7 +94,7 @@
             display: none;
         }
         .home-button {
-            display: block;
+            display: none;
             padding: 10px 20px;
             font-size: 1em;
             margin-top: 20px;
@@ -126,7 +130,6 @@
         </div>
         <button id="new-word-button">New Word</button>
         <button id="finish-button">Finish</button>
-        <button id="home-button" class="home-button hidden">Home</button>
     </div>
 
     <div class="container hidden" id="test-container">
@@ -136,6 +139,7 @@
             <!-- 선택지가 여기에 표시됩니다 -->
         </div>
         <p id="test-feedback" class="hidden"></p>
+        <button id="home-button" class="home-button">Home</button>
     </div>
 
     <script>
@@ -202,9 +206,9 @@
         function generateOptions(correctWord) {
             const quizOptions = document.getElementById('quiz-options');
             quizOptions.innerHTML = '';
-            const shuffledWords = [...words].sort(() => 0.5 - Math.random());
+            const shuffledWords = [...words].sort(() => 0.5 - Math.random()).slice(0, 5);
             shuffledWords.forEach(word => {
-                const button =
+                const button = document.createElement('button');
                             shuffledWords.forEach(word => {
                 const button = document.createElement('button');
                 button.innerText = word.word;
@@ -245,4 +249,4 @@
     </script>
 </body>
 </html>
-                
+               
