@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello Voca by Dana</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            text-align: center;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        p {
+            font-size: 1.5em;
+            color: #555;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1em;
+            margin-top: 20px;
+            cursor: pointer;
+            border: none;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        img {
+            width: 100px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img id="character" src="" alt="Cute Character">
+        <h1>Hello Voca by Dana</h1>
+        <p id="word">Click the button to get a new word</p>
+        <button onclick="getRandomWord()">Get Today's Word</button>
+    </div>
+
+    <script>
+        const words = [
+            "abandon", "ability", "abrupt", "absorb", "abstract",
+            "academy", "access", "accident", "accompany", "account",
+            "accuse", "achieve", "acquire", "active", "actual",
+            "adapt", "addition", "address", "adequate", "adjust",
+            "administer", "admire", "admission", "admit", "adopt",
+            "adult", "advance", "advantage", "adventure", "advertise",
+            "advise", "aesthetic", "affect", "afford", "afraid",
+            "against", "agency", "agenda", "agree", "aid",
+            "aim", "aircraft", "alarm", "album", "alcohol",
+            "alert", "alien", "allow", "aloud", "alphabet",
+            "alter", "alternate", "altogether", "amaze", "ambition"
+        ];
+
+        const characters = [
+            "https://example.com/cute-character1.png",
+            "https://example.com/cute-character2.png",
+            "https://example.com/cute-character3.png",
+            // 추가 이미지 URL을 여기에 넣으세요.
+        ];
+
+        function getRandomWord() {
+            const randomIndex = Math.floor(Math.random() * words.length);
+            const word = words[randomIndex];
+            document.getElementById('word').innerText = word;
+        }
+
+        function getRandomCharacter() {
+            const randomIndex = Math.floor(Math.random() * characters.length);
+            const character = characters[randomIndex];
+            document.getElementById('character').src = character;
+        }
+
+        // 페이지 로드 시 랜덤 캐릭터 이미지를 설정합니다.
+        window.onload = getRandomCharacter;
+    </script>
+</body>
+</html>
