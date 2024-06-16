@@ -128,14 +128,14 @@
         <button class="btn btn-custom" onclick="startQuiz()">Finish</button>
     </div>
 
-    <div id="quiz-section" class="quiz-section container hidden">
-        <h1>Speed Quiz</h1>
+    <div id="quiz-section" class="quiz-section container">
+                <h1>Speed Quiz</h1>
         <p id="quiz-question"></p>
         <div class="d-flex flex-column align-items-center">
-            <button id="choice1" class="btn btn-custom" onclick="checkAnswer('choice1')">choice1</button>
-            <button id="choice2" class="btn btn-custom" onclick="checkAnswer('choice2')">choice2</button>
-            <button id="choice3" class="btn btn-custom" onclick="checkAnswer('choice3')">choice3</button>
-            <button id="choice4" class="btn btn-custom" onclick="checkAnswer('choice4')">choice4</button>
+            <button id="choice1" class="btn btn-custom">choice1</button>
+            <button id="choice2" class="btn btn-custom">choice2</button>
+            <button id="choice3" class="btn btn-custom">choice3</button>
+            <button id="choice4" class="btn btn-custom">choice4</button>
         </div>
         <p id="result" class="result hidden"></p>
         <button id="home-btn" class="btn btn-custom hidden" onclick="goHome()">Home</button>
@@ -218,8 +218,7 @@
         async function goHome() {
             document.querySelector('.content').classList.remove('hidden');
             document.querySelector('#quiz-section').classList.add('hidden');
-            document.query
-                        document.querySelector('#result').classList.add('hidden');
+            document.querySelector('#result').classList.add('hidden');
             document.querySelector('#home-btn').classList.add('hidden');
             await displayWords(); // 다시 랜덤 단어를 표시합니다.
         }
