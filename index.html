@@ -128,7 +128,7 @@
     </div>
 
     <div id="quiz-section" class="quiz-section container hidden">
-        <h1>Quiz</h1>
+        <h1>Speed Quiz</h1>
         <p id="quiz-question"></p>
         <div class="d-flex flex-column align-items-center">
             <button id="choice1" class="btn btn-custom" onclick="checkAnswer('choice1')">choice1</button>
@@ -154,13 +154,13 @@
         async function getWordData(word) {
             const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
             if (!response.ok) {
-                return { definition: 'No definition found', example: 'No example found', synonyms: 'No synonyms found' };
+                return { definition: '-', example: '-', synonyms: '-' };
             }
             const data = await response.json();
             const meaningObj = data[0]?.meanings[0]?.definitions[0];
-            const definition = meaningObj?.definition || 'No definition found';
-            const example = meaningObj?.example || 'No example found';
-            const synonyms = meaningObj?.synonyms?.join(', ') || 'No synonyms found';
+            const definition = meaningObj?.definition || '-';
+            const example = meaningObj?.example || '-';
+            const synonyms = meaningObj?.synonyms?.join(', ') || '-';
             return { definition, example, synonyms };
         }
 
@@ -180,7 +180,7 @@
             const randomWords = await getRandomWords(4);
             const correctWord = randomWords[Math.floor(Math.random() * randomWords.length)];
             const correctWordData = await getWordData(correctWord);
-            document.getElementById('quiz-question').textContent = `Which word means: ${correctWordData.definition}?`;
+            document.getElementById('quiz-question').textContent = `Speed Quiz: Which word means: ${correctWordData.definition}?`;
             document.getElementById('choice1').textContent = randomWords[0];
             document.getElementById('choice2').textContent = randomWords[1];
             document.getElementById('choice3').textContent = randomWords[2];
