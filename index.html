@@ -8,19 +8,21 @@
         body {
             font-family: Arial, sans-serif;
             background-color: #f0f0f0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        .container {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
+        .header {
+            width: 100%;
+            background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             text-align: center;
+            padding: 10px;
+            position: fixed;
+            top: 0;
+            z-index: 1000;
         }
 
         .title {
@@ -29,15 +31,34 @@
             color: #333;
         }
 
-        .word-list {
-            list-style: none;
-            padding: 0;
-            margin: 20px 0;
+        .subtitle {
+            font-size: 0.8em;
+            color: #333;
         }
 
-        .word-list li {
-            font-size: 1.2em;
-            margin: 10px 0;
+        .content {
+            margin-top: 100px;
+            width: 90%;
+            max-width: 800px;
+        }
+
+        .word-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            overflow-y: auto;
+            max-height: 400px;
+            display: block;
+        }
+
+        .word-table th, .word-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .word-table th {
+            background-color: #f2f2f2;
         }
 
         .finish-btn, .choices button, #home-btn {
@@ -57,15 +78,54 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1 class="title">Hello Voca for Dana</h1>
-        <ul class="word-list">
-            <li>Word 1: <span id="word1"></span> - <span id="definition1"></span></li>
-            <li>Word 2: <span id="word2"></span> - <span id="definition2"></span></li>
-            <li>Word 3: <span id="word3"></span> - <span id="definition3"></span></li>
-            <li>Word 4: <span id="word4"></span> - <span id="definition4"></span></li>
-            <li>Word 5: <span id="word5"></span> - <span id="definition5"></span></li>
-        </ul>
+    <div class="header">
+        <h1 class="title">Hello Voca</h1>
+        <p class="subtitle">for Dana</p>
+    </div>
+
+    <div class="content">
+        <table class="word-table">
+            <thead>
+                <tr>
+                    <th>Word</th>
+                    <th>Definition</th>
+                    <th>Example</th>
+                    <th>Synonyms</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td id="word1"></td>
+                    <td id="definition1"></td>
+                    <td id="example1"></td>
+                    <td id="synonyms1"></td>
+                </tr>
+                <tr>
+                    <td id="word2"></td>
+                    <td id="definition2"></td>
+                    <td id="example2"></td>
+                    <td id="synonyms2"></td>
+                </tr>
+                <tr>
+                    <td id="word3"></td>
+                    <td id="definition3"></td>
+                    <td id="example3"></td>
+                    <td id="synonyms3"></td>
+                </tr>
+                <tr>
+                    <td id="word4"></td>
+                    <td id="definition4"></td>
+                    <td id="example4"></td>
+                    <td id="synonyms4"></td>
+                </tr>
+                <tr>
+                    <td id="word5"></td>
+                    <td id="definition5"></td>
+                    <td id="example5"></td>
+                    <td id="synonyms5"></td>
+                </tr>
+            </tbody>
+        </table>
         <button class="finish-btn" onclick="startQuiz()">Finish</button>
     </div>
 
@@ -94,7 +154,7 @@
             const data = await response.json();
             const meaningObj = data[0]?.meanings[0]?.definitions[0];
             const definition = meaningObj?.definition || 'No definition found';
-            const example = meaningObj?.example || 'No example found';
+            const example = meaningObj?.example || '';
             const synonyms = meaningObj?.synonyms?.join(', ') || 'No synonyms found';
             return { definition, example, synonyms };
         }
@@ -105,18 +165,18 @@
                 const word = randomWords[i];
                 const wordData = await getWordData(word);
                 document.getElementById(`word${i + 1}`).textContent = word;
-                document.getElementById(`definition${i + 1}`).textContent = `Definition: ${wordData.definition}`;
-                const exampleElem = document.createElement('p');
-                exampleElem.textContent = `Example: ${wordData.example}`;
-                const synonymsElem = document.createElement('p');
-                synonymsElem.textContent = `Synonyms: ${wordData.synonyms}`;
-                document.getElementById(`definition${i + 1}`).appendChild(exampleElem);
-                document.getElementById(`definition${i + 1}`).appendChild(synonymsElem);
+                document.getElementById(`definition${i + 1}`).textContent = wordData.definition;
+                if (wordData.example) {
+                    document.getElementById(`example${i + 1}`).textContent = wordData.example;
+                } else {
+                    document.getElementById(`example${i + 1}`).parentElement.removeChild(document.getElementById(`example${i + 1}`));
+                }
+                document.getElementById(`synonyms${i + 1}`).textContent = wordData.synonyms;
             }
         }
 
         async function startQuiz() {
-            document.querySelector('.container').classList.add('hidden');
+            document.querySelector('.content').classList.add('hidden');
             document.querySelector('#quiz-section').classList.remove('hidden');
             const randomWords = await getRandomWords(4);
             const correctWord = randomWords[Math.floor(Math.random() * randomWords.length)];
@@ -146,7 +206,7 @@
         }
 
         function goHome() {
-            document.querySelector('.container').classList.remove('hidden');
+            document.querySelector('.content').classList.remove('hidden');
             document.querySelector('#quiz-section').classList.add('hidden');
             document.querySelector('#result').classList.add('hidden');
             document.querySelector('#home-btn').classList.add('hidden');
