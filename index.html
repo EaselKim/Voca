@@ -60,11 +60,11 @@
     <div class="container">
         <h1 class="title">Hello Voca for Dana</h1>
         <ul class="word-list">
-            <li>Word 1: <span id="word1"></span></li>
-            <li>Word 2: <span id="word2"></span></li>
-            <li>Word 3: <span id="word3"></span></li>
-            <li>Word 4: <span id="word4"></span></li>
-            <li>Word 5: <span id="word5"></span></li>
+            <li>Word 1: <span id="word1"></span> - <span id="definition1"></span></li>
+            <li>Word 2: <span id="word2"></span> - <span id="definition2"></span></li>
+            <li>Word 3: <span id="word3"></span> - <span id="definition3"></span></li>
+            <li>Word 4: <span id="word4"></span> - <span id="definition4"></span></li>
+            <li>Word 5: <span id="word5"></span> - <span id="definition5"></span></li>
         </ul>
         <button class="finish-btn" onclick="startQuiz()">Finish</button>
     </div>
@@ -84,19 +84,26 @@
 
     <script>
         async function getRandomWords(count) {
-            const response = await fetch(`https://api.datamuse.com/words?sp=*`);
-            const data = await response.json();
-            const words = data.map(item => item.word).slice(0, count);
+            const response = await fetch(`https://random-word-api.herokuapp.com/word?number=${count}`);
+            const words = await response.json();
             return words;
+        }
+
+        async function getWordData(word) {
+            const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
+            const data = await response.json();
+            const meaning = data[0]?.meanings[0]?.definitions[0]?.definition || 'No definition found';
+            return meaning;
         }
 
         async function displayWords() {
             const randomWords = await getRandomWords(5);
-            document.getElementById('word1').textContent = randomWords[0];
-            document.getElementById('word2').textContent = randomWords[1];
-            document.getElementById('word3').textContent = randomWords[2];
-            document.getElementId('word4').textContent = randomWords[3];
-            document.getElementId('word5').textContent = randomWords[4];
+            for (let i = 0; i < randomWords.length; i++) {
+                const word = randomWords[i];
+                const definition = await getWordData(word);
+                document.getElementById(`word${i + 1}`).textContent = word;
+                document.getElementById(`definition${i + 1}`).textContent = definition;
+            }
         }
 
         async function startQuiz() {
@@ -104,7 +111,8 @@
             document.querySelector('#quiz-section').classList.remove('hidden');
             const randomWords = await getRandomWords(4);
             const correctWord = randomWords[Math.floor(Math.random() * randomWords.length)];
-            document.getElementById('quiz-question').textContent = `Which word means a large mammal with a trunk?`;
+            const correctWordDefinition = await getWordData(correctWord);
+            document.getElementById('quiz-question').textContent = `Which word means: ${correctWordDefinition}?`;
             document.querySelector('.choices button:nth-child(1)').textContent = randomWords[0];
             document.querySelector('.choices button:nth-child(2)').textContent = randomWords[1];
             document.querySelector('.choices button:nth-child(3)').textContent = randomWords[2];
