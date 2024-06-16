@@ -177,8 +177,6 @@
         }
 
         async function startQuiz() {
-            document.querySelector('.content').classList.add('hidden');
-            document.querySelector('#quiz-section').classList.remove('hidden');
             const randomWords = await getRandomWords(4);
             const correctWord = randomWords[Math.floor(Math.random() * randomWords.length)];
             const correctWordData = await getWordData(correctWord);
@@ -187,6 +185,9 @@
             document.getElementById('choice2').textContent = randomWords[1];
             document.getElementById('choice3').textContent = randomWords[2];
             document.getElementById('choice4').textContent = randomWords[3];
+
+            document.querySelector('.content').classList.add('hidden');
+            document.querySelector('#quiz-section').classList.remove('hidden');
 
             document.getElementById('choice1').onclick = function() { checkAnswer(randomWords[0], correctWord); };
             document.getElementById('choice2').onclick = function() { checkAnswer(randomWords[1], correctWord); };
