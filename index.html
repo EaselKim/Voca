@@ -52,6 +52,7 @@
         }
 
         .quiz-section {
+            display: none;
             flex-direction: column;
             align-items: center;
             margin-top: 20px;
@@ -127,7 +128,7 @@
         <button class="btn btn-custom" onclick="startQuiz()">Finish</button>
     </div>
 
-    <div id="quiz-section" class="quiz-section container hidden">
+    <div id="quiz-section" class="quiz-section container">
         <h1>Speed Quiz</h1>
         <p id="quiz-question"></p>
         <div class="d-flex flex-column align-items-center">
@@ -212,7 +213,8 @@
             document.querySelector('#quiz-section').classList.add('hidden');
             document.querySelector('#result').classList.add('hidden');
             document.querySelector('#home-btn').classList.add('hidden');
-            await displayWords(); // 다시 랜덤 단어를 표시합니다.
+            await display
+                        await displayWords(); // 다시 랜덤 단어를 표시합니다.
         }
 
         window.onload = displayWords;
