@@ -85,7 +85,6 @@
         }
 
         .quiz-section {
-            display: none;
             flex-direction: column;
             align-items: center;
             width: 90%;
@@ -173,7 +172,7 @@
                     <td id="synonyms4"></td>
                 </tr>
                 <tr>
-                    <td class="word" id="word5"></td>
+                                        <td class="word" id="word5"></td>
                     <td id="definition5"></td>
                     <td id="example5"></td>
                     <td id="synonyms5"></td>
@@ -183,14 +182,14 @@
         <button class="finish-btn" onclick="startQuiz()">Finish</button>
     </div>
 
-    <div id="quiz-section" class="quiz-section">
+    <div id="quiz-section" class="quiz-section hidden">
         <h1>Quiz</h1>
         <p id="quiz-question"></p>
         <div class="choices">
-            <button onclick="checkAnswer('choice1')">choice1</button>
-            <button onclick="checkAnswer('choice2')">choice2</button>
-            <button onclick="checkAnswer('choice3')">choice3</button>
-            <button onclick="checkAnswer('choice4')">choice4</button>
+            <button id="choice1" onclick="checkAnswer('choice1')">choice1</button>
+            <button id="choice2" onclick="checkAnswer('choice2')">choice2</button>
+            <button id="choice3" onclick="checkAnswer('choice3')">choice3</button>
+            <button id="choice4" onclick="checkAnswer('choice4')">choice4</button>
         </div>
         <p id="result" class="result hidden"></p>
         <button id="home-btn" class="home-btn hidden" onclick="goHome()">Home</button>
@@ -236,22 +235,21 @@
             const correctWord = randomWords[Math.floor(Math.random() * randomWords.length)];
             const correctWordData = await getWordData(correctWord);
             document.getElementById('quiz-question').textContent = `Which word means: ${correctWordData.definition}?`;
-            document.querySelector('.choices button:nth-child(1)').textContent = randomWords[0];
-            document.querySelector('.choices button:nth-child(2)').textContent = randomWords[1];
-            document.querySelector('.choices button:nth-child(3)').textContent = randomWords[2];
-            document.querySelector('.choices button:nth-child(4)').textContent = randomWords[3];
+            document.getElementById('choice1').textContent = randomWords[0];
+            document.getElementById('choice2').textContent = randomWords[1];
+            document.getElementById('choice3').textContent = randomWords[2];
+            document.getElementById('choice4').textContent = randomWords[3];
 
-            document.querySelector('.choices button:nth-child(1)').onclick = function() { checkAnswer(randomWords[0], correctWord); };
-            document.querySelector('.choices button:nth-child(2)').onclick = function() { checkAnswer(randomWords[1], correctWord); };
-            document.querySelector('.choices button:nth-child(3)').onclick = function() { checkAnswer(randomWords[2], correctWord); };
-            document.querySelector('.choices button:nth-child(4)').onclick = function() { checkAnswer(randomWords[3], correctWord); };
+            document.getElementById('choice1').onclick = function() { checkAnswer(randomWords[0], correctWord); };
+            document.getElementById('choice2').onclick = function() { checkAnswer(randomWords[1], correctWord); };
+            document.getElementById('choice3').onclick = function() { checkAnswer(randomWords[2], correctWord); };
+            document.getElementById('choice4').onclick = function() { checkAnswer(randomWords[3], correctWord); };
         }
 
         function checkAnswer(selectedWord, correctWord) {
             const result = document.querySelector('#result');
             const homeBtn = document.querySelector('#home-btn');
-            if (selectedWord === correctWord)
-                        if (selectedWord === correctWord) {
+            if (selectedWord === correctWord) {
                 result.textContent = 'Well done!';
             } else {
                 result.textContent = 'Try again!';
