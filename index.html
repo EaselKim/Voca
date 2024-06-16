@@ -61,19 +61,73 @@
             background-color: #f2f2f2;
         }
 
-        .finish-btn, .choices button, #home-btn {
+        .word-table td {
+            font-size: 0.9em;
+        }
+
+        .word {
+            color: #9370DB; /* 연보라색 */
+        }
+
+        .finish-btn {
             font-size: 1.2em;
             padding: 10px 20px;
             margin: 10px;
             border: none;
             border-radius: 5px;
-            background-color: #007BFF;
-            color: white;
+            background-color: #FFB6C1; /* 연핑크색 */
+            color: black; /* 검정 글씨 */
             cursor: pointer;
         }
 
         .hidden {
             display: none;
+        }
+
+        .quiz-section {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            width: 90%;
+            max-width: 800px;
+            margin-top: 100px;
+        }
+
+        .quiz-section h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        .quiz-section p {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        .choices button {
+            font-size: 1.2em;
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #FFB6C1; /* 연핑크색 */
+            color: black; /* 검정 글씨 */
+            cursor: pointer;
+        }
+
+        .result {
+            font-size: 1.5em;
+            margin-top: 20px;
+        }
+
+        .home-btn {
+            font-size: 1.2em;
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #FFB6C1; /* 연핑크색 */
+            color: black; /* 검정 글씨 */
+            cursor: pointer;
         }
     </style>
 </head>
@@ -95,31 +149,31 @@
             </thead>
             <tbody>
                 <tr>
-                    <td id="word1"></td>
+                    <td class="word" id="word1"></td>
                     <td id="definition1"></td>
                     <td id="example1"></td>
                     <td id="synonyms1"></td>
                 </tr>
                 <tr>
-                    <td id="word2"></td>
+                    <td class="word" id="word2"></td>
                     <td id="definition2"></td>
                     <td id="example2"></td>
                     <td id="synonyms2"></td>
                 </tr>
                 <tr>
-                    <td id="word3"></td>
+                    <td class="word" id="word3"></td>
                     <td id="definition3"></td>
                     <td id="example3"></td>
                     <td id="synonyms3"></td>
                 </tr>
                 <tr>
-                    <td id="word4"></td>
+                    <td class="word" id="word4"></td>
                     <td id="definition4"></td>
                     <td id="example4"></td>
                     <td id="synonyms4"></td>
                 </tr>
                 <tr>
-                    <td id="word5"></td>
+                    <td class="word" id="word5"></td>
                     <td id="definition5"></td>
                     <td id="example5"></td>
                     <td id="synonyms5"></td>
@@ -129,7 +183,7 @@
         <button class="finish-btn" onclick="startQuiz()">Finish</button>
     </div>
 
-    <div id="quiz-section" class="hidden">
+    <div id="quiz-section" class="quiz-section">
         <h1>Quiz</h1>
         <p id="quiz-question"></p>
         <div class="choices">
@@ -138,8 +192,8 @@
             <button onclick="checkAnswer('choice3')">choice3</button>
             <button onclick="checkAnswer('choice4')">choice4</button>
         </div>
-        <p id="result" class="hidden"></p>
-        <button id="home-btn" class="hidden" onclick="goHome()">Home</button>
+        <p id="result" class="result hidden"></p>
+        <button id="home-btn" class="home-btn hidden" onclick="goHome()">Home</button>
     </div>
 
     <script>
@@ -195,6 +249,7 @@
 
         function checkAnswer(selectedWord, correctWord) {
             const result = document.querySelector('#result');
+                        const result = document.querySelector('#result');
             const homeBtn = document.querySelector('#home-btn');
             if (selectedWord === correctWord) {
                 result.textContent = 'Well done!';
