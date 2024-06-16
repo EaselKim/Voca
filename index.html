@@ -167,9 +167,9 @@
             }
 
             const data = await response.json();
-            const definition = data.results[0].definition || '-';
-            const example = data.results[0].examples ? data.results[0].examples[0] : '-';
-            const synonyms = data.results[0].synonyms ? data.results[0].synonyms.join(', ') : '-';
+            const definition = data.results && data.results[0] ? data.results[0].definition : '-';
+            const example = data.results && data.results[0] && data.results[0].examples ? data.results[0].examples[0] : '-';
+            const synonyms = data.results && data.results[0] && data.results[0].synonyms ? data.results[0].synonyms.join(', ') : '-';
 
             return { definition, example, synonyms };
         }
@@ -221,6 +221,7 @@
             document.querySelector('.content').classList.remove('hidden');
             document.querySelector('#quiz-section').classList.add('hidden');
             document.querySelector('#result').classList.add('hidden');
+            document.querySelector('#home-btn').class
                         document.querySelector('#home-btn').classList.add('hidden');
             await displayWords(); // 다시 랜덤 단어를 표시합니다.
         }
